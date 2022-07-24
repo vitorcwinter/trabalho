@@ -1,25 +1,40 @@
 <?php
-include "../BD.php"; // include inclui um arquivo dentro de outro
-session_start();
+include "DB.php";
+include "estilo.php";
 if(isset($_POST['botao'])){
-    if($_POST['botao']=="Enviar"){
-        $sql = "insert into estilo (identificacao) values('{$_POST['nome']}')";
-        $mysqli->query($sql);
-        header("location: ../index.php");
+    if($_POST['botao']=="Confirmar"){
+        $novoEstilo = new estilo($_POST['nome']);
+        $novoEstilo->addEstilo();
+        header("location: index.php");
     
     }
 }
 ?>
-
-<form id="formulario" action = "estilo.php" method = "POST">
-    <fieldset>
-        <h1> Adicionar estilo</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adicionar Estilo</title>
+</head>
+<style> 
+body{
+    text-align: center;
+    background-color: whitesmoke;
+    font-size: 30px;
+}
+</style>
+<body>
+<form id="formulario" action ="" method = "POST" enctype="multipart/form-data">
+       <?php echo "<h1> Adicionar Estilo</h1>"; ?>
         <p>
-            <label for= "nome">Identificação: </label>
-            <input name="nome" id="nome" type="text" />
+            <label for= "nome">Nome do Estilo: </label>
+            <?php echo "<input name='nome' id='nome' type='nome' />"; ?>
         </p>
-    </fieldset>
     <p>
-        <input name="botao" type="submit" value="Enviar" id="enviar"/>
+<?php echo "<input name='botao' type='submit' value='Confirmar'/>"; ?>
     </p>
-</form>
+</form>    
+</body>
+</html>

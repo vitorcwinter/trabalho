@@ -97,9 +97,19 @@ $gravadoras = gravadora::listargravadoras();
                 echo "<tr>";
                 echo "   <td>" . $cd['titulo'] . "</td>";
                 echo "   <td>" . $cd['ano'] . "</td>";
-                echo "   <td>" . $gravadora->listarGravadora($cd['Idgravadora'])->getNome() . "</td>";
-                echo "   <td>" . $artista->listarArtista($cd['Idartista'])->getNome() . "</td>";
-                echo "   <td>" . $estilo->listarEstilo($cd['Idestilo'])->getNome() . "</td>";
+                $idArt = $cd['artista_idArtista'];
+                $consulta1 = "SELECT nome FROM artista WHERE idArtista = {$idArt}";
+                $db1 = new DB();
+                $nameArtista = $db1->search($consulta1);
+                echo "   <td>" . $nameArtista[0]['nome'] . "</td>";
+                $idGravadora =  $cd['gravadora_idGravadora'];
+                $consulta2 = "SELECT identificacao FROM gravadora WHERE idGravadora = {$idGravadora}";
+                $nomeGrav = $db1->search($consulta2);
+                echo "   <td>" . $nomeGrav[0]['identificacao'] . "</td>";
+                $nameEstilo = $cd['estilo_idEstilo'];
+                $consulta3 = "SELECT identificacao FROM estilo WHERE idGravadora = {$nameEstilo}";
+                $nameEstilo = $db1->search($consulta3);
+                echo "<td>" . $nameEstilo[0]['identificacao'] . "</td>";
                 echo "</tr>";
                 }
         } else {

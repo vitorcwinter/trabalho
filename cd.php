@@ -63,21 +63,21 @@ class cd
     }
     public function pesquisar()
     {
-        $sql = "SELECT * FROM cd WHERE";
+        $sql = "SELECT * FROM cd";
         $addTitle='';
         $addYear='';
         $addArtista='';
         $addGravadora='';
         $addEstilo='';
         if($this->titulo != ''){
-            $addTitle = " titulo = {$this->titulo} ";
+            $addTitle = " WHERE titulo = {$this->titulo} ";
             $sql = $sql .$addTitle;
         }
         if($this->ano != ''){
             if($addTitle != ''){
                 $addYear = " AND ano = {$this->ano} ";    
             } else{
-                $addYear = " ano = {$this->ano} ";
+                $addYear = " WHERE ano = {$this->ano} ";
             }
             $sql = $sql .$addYear;
         }
@@ -87,7 +87,7 @@ class cd
             } elseif($addYear != ''){
                 $addArtista = " AND artista_idArtista = {$this->Idartista}";
             } else{
-                $addArtista = " artista_idArtista = {$this->Idartista}";
+                $addArtista = " WHERE artista_idArtista = {$this->Idartista}";
             }
 
             $sql = $sql .$addArtista;
@@ -101,7 +101,7 @@ class cd
             } elseif($addArtista!=''){
                 $addGravadora = " AND gravadora_idGravadora = {$this->Idgravadora} ";
             } else{
-                $addGravadora = " gravadora_idGravadora = {$this->Idgravadora} ";
+                $addGravadora = " WHERE gravadora_idGravadora = {$this->Idgravadora} ";
             }
             $sql = $sql .$addGravadora;
             
@@ -116,7 +116,7 @@ class cd
             } elseif($addGravadora!=''){
                 $addEstilo = "AND estilo_idEstilo = {$this->Idestilo} ";
             } else{
-                $addEstilo = " estilo_idEstilo = {$this->Idestilo} ";
+                $addEstilo = " WHERE estilo_idEstilo = {$this->Idestilo} ";
 
             }
             $sql = $sql .$addEstilo;

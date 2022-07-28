@@ -5,15 +5,18 @@ include "artista.php";
 include "gravadora.php";
 include "cd.php";
 
+$cds='';
 if(isset($_POST['botao']) && $_POST['botao']=="Confirmar"){
     if($_POST['nomedoartista'] != '' ){
         $name= $_POST['nomedoartista'];
-        $sql = "SELECT idArtista FROM artista WHERE nome LIKE '%".$name."%' LIMIT 1";
+        $sql = "SELECT idArtista FROM artista WHERE nome LIKE '%".$name."%'";
+        print_r($sql);
+        die;
         $db = new DB();
         $name = $db->search($sql);
         $idArtista = $name[0]['idArtista'];
     } else{
-        $name='';
+        $idArtista='';
     }
     $newCd = new cd($_POST['titulo'],$_POST['ano'], $idArtista, $_POST['gravadora'], $_POST['estilo']);
     $cds = $newCd->pesquisar();
@@ -21,7 +24,7 @@ if(isset($_POST['botao']) && $_POST['botao']=="Confirmar"){
 
 $estilos = estilo::listarestilos();
 $artistas = artista::listarartistas();
-$gravadoras = gravadora::listargravadoras();
+$gravadoras = gravadora::listargravadoras(); 
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -44,11 +47,11 @@ $gravadoras = gravadora::listargravadoras();
     <h1> PESQUISAR </h1>
     <form method="POST" enctype="multipart/form-data">
         <label for='nomedoartista'>Nome do artista:</label>
-    <?php echo"<input name='nomedoartista' id='nomedoartista' type='text'>"; ?><br>
+    <?php echo"<input type='text' name='nomedoartista'>"; ?><br>
         <label for='ano'>Ano:</label>
-    <?php echo"<input name=ano id=ano type='number'>" ?><br>
+    <?php echo"<input type='int' name='ano' >" ?><br>
         <label for='titulo'>Título:</label>
-    <?php echo"<input name=titulo id=ano type='text'>" ?><br>
+    <?php echo"<input type='text' name='titulo'>" ?><br>
         <label for='titulo'>Estilo:</label>
         <select name="estilo">
             <option></option>
@@ -89,7 +92,7 @@ $gravadoras = gravadora::listargravadoras();
 
         <?php
 
-        if ($cds) {
+        if ($cds!='') {
             foreach ($cds as $cd) {
                 echo "<tr>";
                 echo "   <td>" . $cd['titulo'] . "</td>";
@@ -100,7 +103,7 @@ $gravadoras = gravadora::listargravadoras();
                 echo "</tr>";
                 }
         } else {
-            echo '<tr> <td>Não há CDs para os filtros correspondentes!</td><td></td><td></td><td></td><td></td> </tr>';
+            echo '<tr> <td>Não há CDs para os filtros correspondentes!</td> </tr>';
         }
 
         ?>

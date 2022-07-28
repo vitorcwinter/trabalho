@@ -5,7 +5,7 @@ class cd
 {
 
     private int $id;
-    public function __construct(private string $titulo, private int $ano, private int $Idartista, private int $Idgravadora, private int $Idestilo)
+    public function __construct(private string $titulo, private $ano = null, private $Idartista, private  $Idgravadora, private  $Idestilo)
     {
     }
     public function  getId(): int
@@ -70,31 +70,76 @@ class cd
         $addGravadora='';
         $addEstilo='';
         if($this->titulo != ''){
-            $addTitle = "titulo = '$this->titulo' AND ";
+            $addTitle = " titulo = {$this->titulo} ";
+            $sql = $sql .$addTitle;
         }
         if($this->ano != ''){
-            $addYear = "ano = '$this->ano' AND ";
+            if($addTitle != ''){
+                $addYear = " AND ano = {$this->ano} ";    
+            } else{
+                $addYear = " ano = {$this->ano} ";
+            }
+            $sql = $sql .$addYear;
         }
-        if($this->artista_idArtista != ''){
-            $addArtista = "artista_idArtista = '$this->Idartista' AND ";
+        if($this->Idartista != ''){
+            if($addTitle != ''){
+                $addArtista = " AND artista_idArtista = {$this->Idartista}";
+            } elseif($addYear != ''){
+                $addArtista = " AND artista_idArtista = {$this->Idartista}";
+            } else{
+                $addArtista = " artista_idArtista = {$this->Idartista}";
+            }
+
+            $sql = $sql .$addArtista;
+            
         }
-        if($this->gravadora_idGravadora != ''){
-            $addGravadora = "gravadora_idGravadora = '$this->Idgravadora' AND ";
+        if($this->Idgravadora != ''){
+            if($addTitle!=''){
+                $addGravadora = " AND gravadora_idGravadora = {$this->Idgravadora} ";    
+            } elseif($addYear=''){
+                $addGravadora = " AND gravadora_idGravadora = {$this->Idgravadora} ";
+            } elseif($addArtista!=''){
+                $addGravadora = " AND gravadora_idGravadora = {$this->Idgravadora} ";
+            } else{
+                $addGravadora = " gravadora_idGravadora = {$this->Idgravadora} ";
+            }
+            $sql = $sql .$addGravadora;
+            
         }
-        if($this->estilo_idEstilo != ''){
-            $addEstilo = "estilo_idEstilo = '$this->Idestilo' AND ";
+        if($this->Idestilo != ''){
+            if($addTitle!=''){
+                $addEstilo = " AND estilo_idEstilo = {$this->Idestilo} ";
+            } elseif($addYear!=''){
+                $addEstilo = "AND estilo_idEstilo = {$this->Idestilo} ";
+            } elseif($addArtista!=''){
+                $addEstilo = "AND estilo_idEstilo = {$this->Idestilo} ";
+            } elseif($addGravadora!=''){
+                $addEstilo = "AND estilo_idEstilo = {$this->Idestilo} ";
+            } else{
+                $addEstilo = " estilo_idEstilo = {$this->Idestilo} ";
+
+            }
+            $sql = $sql .$addEstilo;
+            
         }
-        $sql = $sql .$addTitle;
-        $sql = $sql .$addYear;
-        $sql = $sql .$addArtista;
-        $sql = $sql .$addGravadora;
-        $sql = $sql .$addEstilo;
-        $db = new DB();
-        $resultado = $db->search($sql);
-        if ($resultado) {
-            return $resultado;
-        } else {
-            return false;
+        if($sql != "SELECT * FROM cd"){
+            $db = new DB();
+            $resultado = $db->search($sql);
+            if ($resultado) {
+                return $resultado;
+            } else {
+                return false;
+            }
+        } else{
+            $sql = "SELECT * FROM  cd";
+            $db = new DB();
+            $resultado = $db->search($sql);
+            if ($resultado) {
+                return $resultado;
+            } else {
+                return false;
+            }
         }
-    }
+        }
+        
 }

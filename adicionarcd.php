@@ -39,14 +39,14 @@ body{
        <?php echo "<h1> Adicionar CD</h1>"; ?>
         <p>
             <label for= "nome">Título do CD: </label>
-            <?php echo "<input name='nome' id='nome' type='text' />"; ?>
+            <?php echo "<input required name='nome' id='nome' type='text' />"; ?>
         </p>
         <p>
             <label for= "nome">Ano do CD: </label>
-            <?php echo "<input name='ano' id='nome' type='int' />"; ?>
+            <?php echo "<input required name='ano' id='nome' type='int' />"; ?>
         </p>
         <p>
-        <label for= "nomeestilo">Selecione o estilo: </label> <select name="estilo">
+        <label for= "nomeestilo">Selecione o estilo: </label> <select required name="estilo">
             <option></option>
             <?php
         foreach($estilos as $estiloAux){
@@ -60,7 +60,7 @@ body{
         </select> </br>
         </p>
         <p>
-    <label for= "nomeartista">Selecione o artista: </label> <select name="artista">
+    <label for= "nomeartista">Selecione o artista: </label> <select required name="artista">
     <option></option>
     <?php
         foreach($artistas as $artistaAux){
@@ -75,7 +75,7 @@ body{
     </select> </br>
     </p>
     <p>
-    <label for= "nomegravadora">Selecione a gravadora: </label> <select name="gravadora">
+    <label for= "nomegravadora">Selecione a gravadora: </label> <select required name="gravadora">
     <option></option>
     <?php
         foreach($gravadoras as $gravadoraAux){

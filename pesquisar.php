@@ -105,10 +105,11 @@ $gravadoras = gravadora::listargravadoras();
                 $artista = new artista('');
                 $nomeArtista = $artista->listarArtista($cd['artista_idArtista']);
                 echo "<td>".$nomeArtista[0]['nome']. "</td>";
-                $estilo = new estilo('');
-                echo "<td>" .$estilo->listarEstilo($cd['estilo_idEstilo'])['0']['identificacao']. "</td>";
                 $gravadora = new gravadora('');
                 echo "<td>" .$gravadora->listarGravadora($cd['gravadora_idGravadora'])[0]['identificacao']. "</td>";
+                $estilo = new estilo('');
+                echo "<td>" .$estilo->listarEstilo($cd['estilo_idEstilo'])['0']['identificacao']. "</td>";
+                
                 }
         } else {
             echo '<tr> <td>Não há CDs para os filtros correspondentes!</td> </tr>';

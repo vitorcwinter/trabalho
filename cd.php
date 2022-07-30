@@ -5,7 +5,7 @@ class cd
 {
 
     private int $id;
-    public function __construct(private string $titulo, private $ano = null, private $Idartista, private  $Idgravadora, private  $Idestilo)
+    public function __construct(private string $titulo, private $ano = null, private  $Idartista = null, private $Idgravadora = null, private $Idestilo = null)
     {
     }
     public function  getId(): int
@@ -63,21 +63,21 @@ class cd
     }
     public function pesquisar()
     {
-        $sql = "SELECT * FROM cd";
+        $sql = "SELECT * FROM cd WHERE";
         $addTitle='';
         $addYear='';
         $addArtista='';
         $addGravadora='';
         $addEstilo='';
         if($this->titulo != ''){
-            $addTitle = " WHERE titulo = {$this->titulo} ";
+            $addTitle = " titulo LIKE '%".$this->titulo."%' ";
             $sql = $sql .$addTitle;
         }
         if($this->ano != ''){
             if($addTitle != ''){
                 $addYear = " AND ano = {$this->ano} ";    
             } else{
-                $addYear = " WHERE ano = {$this->ano} ";
+                $addYear = " ano = {$this->ano} ";
             }
             $sql = $sql .$addYear;
         }
@@ -87,7 +87,7 @@ class cd
             } elseif($addYear != ''){
                 $addArtista = " AND artista_idArtista = {$this->Idartista}";
             } else{
-                $addArtista = " WHERE artista_idArtista = {$this->Idartista}";
+                $addArtista = " artista_idArtista = {$this->Idartista}";
             }
 
             $sql = $sql .$addArtista;
@@ -101,7 +101,7 @@ class cd
             } elseif($addArtista!=''){
                 $addGravadora = " AND gravadora_idGravadora = {$this->Idgravadora} ";
             } else{
-                $addGravadora = " WHERE gravadora_idGravadora = {$this->Idgravadora} ";
+                $addGravadora = " gravadora_idGravadora = {$this->Idgravadora} ";
             }
             $sql = $sql .$addGravadora;
             
@@ -116,13 +116,13 @@ class cd
             } elseif($addGravadora!=''){
                 $addEstilo = "AND estilo_idEstilo = {$this->Idestilo} ";
             } else{
-                $addEstilo = " WHERE estilo_idEstilo = {$this->Idestilo} ";
+                $addEstilo = " estilo_idEstilo = {$this->Idestilo} ";
 
             }
             $sql = $sql .$addEstilo;
             
         }
-        if($sql != "SELECT * FROM cd"){
+        if($sql != "SELECT * FROM cd WHERE"){
             $db = new DB();
             $resultado = $db->search($sql);
             if ($resultado) {

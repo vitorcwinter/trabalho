@@ -10,8 +10,6 @@ if(isset($_POST['botao']) && $_POST['botao']=="Confirmar"){
     if($_POST['nomedoartista'] != '' ){
         $name= $_POST['nomedoartista'];
         $sql = "SELECT idArtista FROM artista WHERE nome LIKE '%".$name."%'";
-        print_r($sql);
-        die;
         $db = new DB();
         $name = $db->search($sql);
         $idArtista = $name[0]['idArtista'];
@@ -33,6 +31,8 @@ $gravadoras = gravadora::listargravadoras();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS only -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
     <title>Pesquisar</title>
 </head>
 <style>
@@ -40,6 +40,10 @@ $gravadoras = gravadora::listargravadoras();
         text-align: center;
         background-color: whitesmoke;
         font-size: 30px;
+    } 
+    table{
+        border-color: black;
+        border: 1px;
     }
 </style>
 
@@ -79,13 +83,14 @@ $gravadoras = gravadora::listargravadoras();
             <?php echo "<input name='botao' type='submit' value='Confirmar'/>"; ?>
         </p>
     </form>
-    <table>
+    <div class="container">
+    <table class="table">
         <thead>
             <tr>
                 <th>Título do CD</th>
                 <th>Ano de lançamento</th>
-                <th>Gravadora do CD</th>
                 <th>Artista Musical</th>
+                <th>Gravadora do CD</th>
                 <th>Estilo Musical</th>
             </tr>
         </thead>
@@ -97,20 +102,13 @@ $gravadoras = gravadora::listargravadoras();
                 echo "<tr>";
                 echo "   <td>" . $cd['titulo'] . "</td>";
                 echo "   <td>" . $cd['ano'] . "</td>";
-                $idArt = $cd['artista_idArtista'];
-                $consulta1 = "SELECT nome FROM artista WHERE idArtista = {$idArt}";
-                $db1 = new DB();
-                $nameArtista = $db1->search($consulta1);
-                echo "   <td>" . $nameArtista[0]['nome'] . "</td>";
-                $idGravadora =  $cd['gravadora_idGravadora'];
-                $consulta2 = "SELECT identificacao FROM gravadora WHERE idGravadora = {$idGravadora}";
-                $nomeGrav = $db1->search($consulta2);
-                echo "   <td>" . $nomeGrav[0]['identificacao'] . "</td>";
-                $nameEstilo = $cd['estilo_idEstilo'];
-                $consulta3 = "SELECT identificacao FROM estilo WHERE idGravadora = {$nameEstilo}";
-                $nameEstilo = $db1->search($consulta3);
-                echo "<td>" . $nameEstilo[0]['identificacao'] . "</td>";
-                echo "</tr>";
+                $artista = new artista('');
+                $nomeArtista = $artista->listarArtista($cd['artista_idArtista']);
+                echo "<td>".$nomeArtista[0]['nome']. "</td>";
+                $estilo = new estilo('');
+                echo "<td>" .$estilo->listarEstilo($cd['estilo_idEstilo'])['0']['identificacao']. "</td>";
+                $gravadora = new gravadora('');
+                echo "<td>" .$gravadora->listarGravadora($cd['gravadora_idGravadora'])[0]['identificacao']. "</td>";
                 }
         } else {
             echo '<tr> <td>Não há CDs para os filtros correspondentes!</td> </tr>';
@@ -119,7 +117,8 @@ $gravadoras = gravadora::listargravadoras();
         ?>
 
     </table>
-    <a href='../index.html'>Voltar</a>
+    </div>
+    <a href='index.php'>Voltar</a>
 
 </body>
 

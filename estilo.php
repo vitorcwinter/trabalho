@@ -46,7 +46,8 @@ class estilo
             return false;
         }
     }
-    public function listarEstilo($id){
+    public function listarEstilo($id)
+    {
         $sql = "SELECT identificacao FROM estilo WHERE idEstilo = $id";
         $db = new DB();
         $resultado = $db->search($sql);

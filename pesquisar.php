@@ -5,24 +5,24 @@ include "artista.php";
 include "gravadora.php";
 include "cd.php";
 
-$cds='';
-if(isset($_POST['botao']) && $_POST['botao']=="Confirmar"){
-    if($_POST['nomedoartista'] != '' ){
-        $name= $_POST['nomedoartista'];
-        $sql = "SELECT idArtista FROM artista WHERE nome LIKE '%".$name."%'";
+$cds = '';
+if (isset($_POST['botao']) && $_POST['botao'] == "Confirmar") {
+    if ($_POST['nomedoartista'] != '') {
+        $name = $_POST['nomedoartista'];
+        $sql = "SELECT idArtista FROM artista WHERE nome LIKE '%" . $name . "%'";
         $db = new DB();
         $name = $db->search($sql);
         $idArtista = $name[0]['idArtista'];
-    } else{
-        $idArtista='';
+    } else {
+        $idArtista = '';
     }
-    $newCd = new cd($_POST['titulo'],$_POST['ano'], $idArtista, $_POST['gravadora'], $_POST['estilo']);
+    $newCd = new cd($_POST['titulo'], $_POST['ano'], $idArtista, $_POST['gravadora'], $_POST['estilo']);
     $cds = $newCd->pesquisar();
 }
 
 $estilos = estilo::listarestilos();
 $artistas = artista::listarartistas();
-$gravadoras = gravadora::listargravadoras(); 
+$gravadoras = gravadora::listargravadoras();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -32,7 +32,7 @@ $gravadoras = gravadora::listargravadoras();
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- CSS only -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
     <title>Pesquisar</title>
 </head>
 <style>
@@ -40,8 +40,9 @@ $gravadoras = gravadora::listargravadoras();
         text-align: center;
         background-color: whitesmoke;
         font-size: 30px;
-    } 
-    table{
+    }
+
+    table {
         border-color: black;
         border: 1px;
     }
@@ -51,11 +52,11 @@ $gravadoras = gravadora::listargravadoras();
     <h1> PESQUISAR </h1>
     <form method="POST" enctype="multipart/form-data">
         <label for='nomedoartista'>Nome do artista:</label>
-    <?php echo"<input type='text' name='nomedoartista'>"; ?><br>
+        <?php echo "<input type='text' name='nomedoartista'>"; ?><br>
         <label for='ano'>Ano:</label>
-    <?php echo"<input type='int' name='ano' >" ?><br>
+        <?php echo "<input type='int' name='ano' >" ?><br>
         <label for='titulo'>Título:</label>
-    <?php echo"<input type='text' name='titulo'>" ?><br>
+        <?php echo "<input type='text' name='titulo'>" ?><br>
         <label for='titulo'>Estilo:</label>
         <select name="estilo">
             <option></option>
@@ -84,40 +85,39 @@ $gravadoras = gravadora::listargravadoras();
         </p>
     </form>
     <div class="container">
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Título do CD</th>
-                <th>Ano de lançamento</th>
-                <th>Artista Musical</th>
-                <th>Gravadora do CD</th>
-                <th>Estilo Musical</th>
-            </tr>
-        </thead>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Título do CD</th>
+                    <th>Ano de lançamento</th>
+                    <th>Artista Musical</th>
+                    <th>Gravadora do CD</th>
+                    <th>Estilo Musical</th>
+                </tr>
+            </thead>
 
-        <?php
+            <?php
 
-        if ($cds!='') {
-            foreach ($cds as $cd) {
-                echo "<tr>";
-                echo "   <td>" . $cd['titulo'] . "</td>";
-                echo "   <td>" . $cd['ano'] . "</td>";
-                $artista = new artista('');
-                $nomeArtista = $artista->listarArtista($cd['artista_idArtista']);
-                echo "<td>".$nomeArtista[0]['nome']. "</td>";
-                $gravadora = new gravadora('');
-                echo "<td>" .$gravadora->listarGravadora($cd['gravadora_idGravadora'])[0]['identificacao']. "</td>";
-                $estilo = new estilo('');
-                echo "<td>" .$estilo->listarEstilo($cd['estilo_idEstilo'])['0']['identificacao']. "</td>";
-                
+            if ($cds != '') {
+                foreach ($cds as $cd) {
+                    echo "<tr>";
+                    echo "   <td>" . $cd['titulo'] . "</td>";
+                    echo "   <td>" . $cd['ano'] . "</td>";
+                    $artista = new artista('');
+                    $nomeArtista = $artista->listarArtista($cd['artista_idArtista']);
+                    echo "<td>" . $nomeArtista[0]['nome'] . "</td>";
+                    $gravadora = new gravadora('');
+                    echo "<td>" . $gravadora->listarGravadora($cd['gravadora_idGravadora'])[0]['identificacao'] . "</td>";
+                    $estilo = new estilo('');
+                    echo "<td>" . $estilo->listarEstilo($cd['estilo_idEstilo'])['0']['identificacao'] . "</td>";
                 }
-        } else {
-            echo '<tr> <td>Não há CDs para os filtros correspondentes!</td> </tr>';
-        }
+            } else {
+                echo '<tr> <td>Não há CDs para os filtros correspondentes!</td> </tr>';
+            }
 
-        ?>
+            ?>
 
-    </table>
+        </table>
     </div>
     <a href='index.php'>Voltar</a>
 
